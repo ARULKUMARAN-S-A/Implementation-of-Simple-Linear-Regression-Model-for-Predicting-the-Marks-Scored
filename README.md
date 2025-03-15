@@ -8,139 +8,72 @@ To write a program to predict the marks scored by a student using the simple lin
 2. Anaconda – Python 3.7 Installation / Jupyter notebook
 
 ## Algorithm
-1. Define the relationship between independent (X) and dependent (Y) variables 
-2. Compute distances between the query point and all other points.
-3. Assign each data point to the nearest cluster centroid.
-4. Split the dataset into subsets based on the selected feature.
+1. Load the dataset and split it into features (X) and target (Y).
+2. Split the data into training and testing sets using train_test_split.
+3. Train a Linear Regression model on the training set.
+4. Evaluate the model using predictions on the test set and plot the results.
 
 ## Program:
 ```
 /*
 Program to implement the simple linear regression model for predicting the marks scored.
-Developed by: Mithun S
-RegisterNumber: 24901037
+Developed by: ARUL KUMARAN S A
+RegisterNumber:  212224040030
 */
 ```
 ```
-import pandas as pd
 import numpy as np
-import  matplotlib.pyplot  as  plt
-from sklearn.metrics import mean_absolute_error,mean_squared_error 
-df=pd.read_csv('student_scores.csv')
-print(df) 
-df.head(0) 
-df.tail(0) 
-print(df.head())
-print(df.tail())
-x = df.iloc[:, :-1].values 
-print(x)
-y = df.iloc[:,1].values
-print(y)
+import pandas as pd
+from sklearn.metrics import mean_absolute_error,mean_squared_error
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=1/3,random_state=0) 
 from sklearn.linear_model import LinearRegression
-regressor = LinearRegression()
-regressor.fit(x_train,y_train)  
-y_pred = regressor.predict(x_test) 
-print(y_pred)
-print(y_test)
-#Graph plot for training data 
-plt.scatter(x_train,y_train,color='black') 
-plt.plot(x_train,regressor.predict(x_train),color='blue') 
-plt.title("Hours vs Scores(Training set)") 
+dataset = pd.read_csv('student_scores.csv')
+print(dataset.head())
+print(dataset.tail())
+X=dataset.iloc[:,:-1].values
+print(X)
+Y=dataset.iloc[:,-1].values
+print(Y)
+print(X.shape)
+print(Y.shape)
+from sklearn.model_selection import train_test_split
+X_train,X_test,Y_train,Y_test = train_test_split(X,Y,test_size=1/3,random_state=0)
+from sklearn.linear_model import LinearRegression
+reg=LinearRegression()
+reg.fit(X_train,Y_train)
+Y_pred=reg.predict(X_test)
+print(Y_pred)
+print(Y_test)
+print(X_train.shape)
+print(X_test.shape)
+print(Y_train.shape)
+print(Y_test.shape)
+mse=mean_squared_error(Y_test,Y_pred)
+print('MSE =',mse)
+mae=mean_absolute_error(Y_test,Y_pred)
+print('MAE =',mae)
+rmse=mean_absolute_error(Y_test,Y_pred)
+print('RMSE =',rmse)
+plt.scatter(X_test,Y_test,color="blue")
+plt.plot(X_test,Y_pred,color="silver")
+plt.title('Test set(H vs S)')
 plt.xlabel("Hours")
-plt.ylabel("Scores") 
+plt.ylabel("scores")
 plt.show()
-#Graph plot for test data 
-plt.scatter(x_test,y_test,color='black') 
-plt.plot(x_train,regressor.predict(x_train),color='red') 
-plt.title("Hours vs Scores(Testing set)") 
-plt.xlabel("Hours")
-plt.ylabel("Scores")
-plt.show() 
-mse=mean_absolute_error(y_test,y_pred) 
-print('MSE = ',mse)
-mae=mean_bsolute_error(y_test,y_pred) 
-print('MAE = ',mae)
-rmse=np.sqrt(mse) 
-print("RMSE= ",rmse)
+a=np.array([[13]])
+ans=reg.predict(a)
+print(ans)
 ```
 
 ## Output:
-    Hours  Scores
-0     2.5      21
-1     5.1      47
-2     3.2      27
-3     8.5      75
-4     3.5      30
-5     1.5      20
-6     9.2      88
-7     5.5      60
-8     8.3      81
-9     2.7      25
-10    7.7      85
-11    5.9      62
-12    4.5      41
-13    3.3      42
-14    1.1      17
-15    8.9      95
-16    2.5      30
-17    1.9      24
-18    6.1      67
-19    7.4      69
-20    2.7      30
-21    4.8      54
-22    3.8      35
-23    6.9      76
-24    7.8      86
-   Hours  Scores
-0    2.5      21
-1    5.1      47
-2    3.2      27
-3    8.5      75
-4    3.5      30
-    Hours  Scores
-20    2.7      30
-21    4.8      54
-22    3.8      35
-23    6.9      76
-24    7.8      86
-[[2.5]
- [5.1]
- [3.2]
- [8.5]
- [3.5]
- [1.5]
- [9.2]
- [5.5]
- [8.3]
- [2.7]
- [7.7]
- [5.9]
- [4.5]
- [3.3]
- [1.1]
- [8.9]
- [2.5]
- [1.9]
- [6.1]
- [7.4]
- [2.7]
- [4.8]
- [3.8]
- [6.9]
- [7.8]]
-[21 47 27 75 30 20 88 60 81 25 85 62 41 42 17 95 30 24 67 69 30 54 35 76
- 86]
-[17.04289179 33.51695377 74.21757747 26.73351648 59.68164043 39.33132858
- 20.91914167 78.09382734 69.37226512]
-[20 27 69 30 62 35 24 86 76]
-![image](https://github.com/user-attachments/assets/c32eb706-2cb7-4d9e-a571-5bb85650aa48)
-![image](https://github.com/user-attachments/assets/98c4d5aa-8f51-4647-981e-c53220d3ff05)
-
-MSE =  4.691397441397438
-MAE =  4.691397441397438
-RMSE=  2.1659633979819324
+![Screenshot 2025-03-15 230652](https://github.com/user-attachments/assets/1876e17a-164c-4b03-a77b-6f940d8875db)
+![Screenshot 2025-03-15 230808](https://github.com/user-attachments/assets/4bd98eff-2497-43db-830e-760321a1eb4b)
+![Screenshot 2025-03-15 230901](https://github.com/user-attachments/assets/6f8ce2ac-5088-4fd9-9fbe-8875b41709a3)
+![Screenshot 2025-03-15 230948](https://github.com/user-attachments/assets/28a1a06b-1e3b-413b-ab46-fdbc6bf74253)
+![Screenshot 2025-03-15 231021](https://github.com/user-attachments/assets/c3e1876e-f001-4483-8d65-8e3042b819c7)
+![download](https://github.com/user-attachments/assets/10b760e5-478b-481e-a644-9d9da7176265)
+![Screenshot 2025-03-15 231141](https://github.com/user-attachments/assets/1e5d2d70-bfa9-4cb9-894f-e0f31cc6aaa5)
 
 
 ## Result:
